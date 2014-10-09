@@ -1,0 +1,5 @@
+cheese_main:
+    resource: "@CheeseMainBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

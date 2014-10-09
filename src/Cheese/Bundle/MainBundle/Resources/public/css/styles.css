@@ -1,0 +1,29 @@
+html { 
+    height: 100%;
+    border: none;
+}
+
+* { 
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    height:auto;
+}
+
+label {
+    display:block;
+}
+
+input {
+    border: 2px solid darkgray;
+    border-radius: 2px;
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    padding: 2px;
+}
+
+.button {
+    margin-top: 30px;
+}
