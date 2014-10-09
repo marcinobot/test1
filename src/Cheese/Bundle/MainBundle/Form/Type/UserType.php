@@ -5,6 +5,8 @@ namespace Cheese\Bundle\MainBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Cheese\Bundle\MainBundle\Form\EventListener\UserEditSubscriber;
+
 /**
  * UserType
  */
@@ -18,6 +20,8 @@ class UserType extends AbstractType
             ->add('accountNumber', 'text', array('label' => 'Account Number *'))
             ->add('save', 'submit', array('label' => 'submit', 
                 'attr' => ['class' => 'button']));
+       
+        $builder->addEventSubscriber(new UserEditSubscriber());
     }
 
     public function getName()

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Description of User
  * @ORM\Table(name="test_user")
- * @ORM\Entity(repositoryClass="Skynet\Bundle\UserBundle\Entity\UserRepository")
+ * @ORM\Entity(repositoryClass="Cheese\Bundle\MainBundle\Entity\UserRepository")
  * @author marcin
  */
 class User
@@ -63,34 +63,39 @@ class User
         $this->accountNumber = $accountNumber;
     }
     
-    function getEmail()
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function getEmail()
     {
         return $this->email;
     }
 
-    function getDateOfBirth()
+    public function getDateOfBirth()
     {
         return $this->dateOfBirth;
     }
 
-    function getAccountNumber()
+    public function getAccountNumber()
     {
         return $this->accountNumber;
     }
 
-    function setEmail($email)
+    public function setEmail($email)
     {
         $this->email = $email;
         return $this;
     }
 
-    function setDateOfBirth($dateOfBirth)
+    public function setDateOfBirth($dateOfBirth)
     {
         $this->dateOfBirth = $dateOfBirth;
         return $this;
     }
 
-    function setAccountNumber($accountNumber)
+    public function setAccountNumber($accountNumber)
     {
         $this->accountNumber = $accountNumber;
         return $this;

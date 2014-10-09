@@ -13,4 +13,12 @@
         </service>
     </services>
     -->
+    
+    <parameters>
+        <parameter key="risk_calculator.class">Cheese\Bundle\MainBundle\Service\RiskCalculator</parameter>
+    </parameters>
+
+    <services>
+        <service id="risk_calculator" class="%risk_calculator.class%"></service>
+    </services>
 </container>

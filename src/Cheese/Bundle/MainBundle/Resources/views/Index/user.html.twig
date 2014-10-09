@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h1>Hello, {{ user.email }}</h1><hr/><br/>
+<p>Based on your age {{ user.dateOfBirth }} 
+    your risk of turning into cheese is {{ risk }}%</p>
+<br/>
+<p>Risk of being caught in the trap is {{ mortgageRisk }}%</p>
+<br/>
+
+<a href="{{ uri }}">Click here to change Your registration.</a>
+{% endblock %}
