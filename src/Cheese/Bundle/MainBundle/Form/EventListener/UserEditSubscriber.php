@@ -17,7 +17,7 @@ class UserEditSubscriber implements EventSubscriberInterface
         $user = $event->getData();
         $form = $event->getForm();
         
-        if (!empty($user->getId()) && (int)$user->getId() > 0) {
+        if (!empty($user) && !empty($user->getId()) && (int)$user->getId() > 0) {
             $form->add('email', 'text', array(
                 'label' => 'Insert e-mail *',
                 'disabled' => true));

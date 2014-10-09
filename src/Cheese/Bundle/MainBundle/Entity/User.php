@@ -4,12 +4,15 @@ namespace Cheese\Bundle\MainBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Description of User
+ * repositoryClass="Cheese\Bundle\MainBundle\Entity\UserRepository")
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="test_user")
- * @ORM\Entity(repositoryClass="Cheese\Bundle\MainBundle\Entity\UserRepository")
- * @author marcin
+ * @UniqueEntity("email")
  */
 class User
 {
@@ -44,8 +47,8 @@ class User
     protected $dateOfBirth;
     
     /**
-     * @var integer
-     * @ORM\Column(name="account", type="integer")
+     * @var string
+     * @ORM\Column(name="account", type="string", length=34)
      * 
      * @Assert\NotBlank()
      * @Assert\Type(type="numeric")
@@ -55,6 +58,18 @@ class User
      * )
      */
     protected $accountNumber;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="visits", type="integer", options={"default" = 1})
+     */
+    protected $visits;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="reference", type="string", length=15, nullable=true)
+     */
+    protected $referenceNumber;
 
     public function __construct($email='', $dob='', $accountNumber='')
     {
@@ -66,6 +81,22 @@ class User
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getVisits()
+    {
+        return $this->visits;
+    }
+
+    public function setVisits($visits)
+    {
+        $this->visits = $visits;
+        return $this;
+    }
+    
+    public function visit()
+    {
+        $this->visits++; 
     }
     
     public function getEmail()
@@ -100,4 +131,16 @@ class User
         $this->accountNumber = $accountNumber;
         return $this;
     }
+    
+    /**
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
+    public function onPrePersist(\Doctrine\ORM\Event\LifecycleEventArgs $e)
+    {
+        $accountPrefix = substr($this->accountNumber, 0, 4);
+        $this->referenceNumber = $accountPrefix . '-' . $e->getEntity()->getId(); 
+        $e->getEntityManager()->flush();
+    }
+    
 }

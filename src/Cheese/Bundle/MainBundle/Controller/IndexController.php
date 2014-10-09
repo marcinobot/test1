@@ -21,15 +21,17 @@ class IndexController extends Controller
             $user = $this->getDoctrine()
             ->getRepository('CheeseMainBundle:User')
             ->find($id);
+            
+            $this->visit($user);
         } else {
             $user = new User();
         }
-  
-        $form = $this->createForm(new UserType(), $user);
         
+        $form = $this->createForm(new UserType(), $user);
         $form->handleRequest($request);
         
         if ($form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -40,7 +42,10 @@ class IndexController extends Controller
             ));
         }
         
-        return array('form' => $form->createView());
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+        );
     }
     
     
@@ -60,6 +65,8 @@ class IndexController extends Controller
             );
         }
         
+        $this->visit($user);
+        
         $risk = $this->get('risk_calculator');
         $risk->setAge($user->getDateOfBirth());
             
@@ -72,6 +79,35 @@ class IndexController extends Controller
                 ['id' => $user->getId()]
             )
         ];
+    }
+    
+    /**
+     * @Template()
+     */
+    public function visitsAction($id)
+    {
+        if (!empty($id)) {
+            $user = $this->getDoctrine()
+            ->getRepository('CheeseMainBundle:User')
+            ->find($id);
+        } else {
+            $user = new User();
+            $user->visit();
+        }
+        
+        return [
+            'user' => $user->getVisits(),
+            'unique' => 10,
+            'total' => 20
+        ];
+    }
+
+    protected function visit($user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user->visit();
+        $em->persist($user);
+        $em->flush();
     }
         
 }

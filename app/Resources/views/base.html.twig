@@ -10,7 +10,8 @@
     <body>
         {% block header %}
         <header>
-            <img class="mouse" src="{{ asset('bundles/cheesemain/images/mouse.png') }}">            
+            <img class="mouse" src="{{ asset('bundles/cheesemain/images/mouse.png') }}">  
+            {% render controller("CheeseMainBundle:Index:visits", { 'id': user.id|default(0)}) %}
         </header>
         {% endblock %}
         
