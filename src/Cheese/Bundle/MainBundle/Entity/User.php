@@ -61,7 +61,7 @@ class User
     
     /**
      * @var integer
-     * @ORM\Column(name="visits", type="integer", options={"default" = 1})
+     * @ORM\Column(name="visits", type="integer", options={"default" = 1}, nullable=true)
      */
     protected $visits;
     

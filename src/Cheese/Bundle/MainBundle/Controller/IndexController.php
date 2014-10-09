@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Cheese\Bundle\MainBundle\Form\Type\UserType;
 use Cheese\Bundle\MainBundle\Entity\User;
+use Cheese\Bundle\MainBundle\Entity\TotalVisits;
 
 class IndexController extends Controller
 {
@@ -26,6 +27,8 @@ class IndexController extends Controller
         } else {
             $user = new User();
         }
+        
+        $this->totalVisit();
         
         $form = $this->createForm(new UserType(), $user);
         $form->handleRequest($request);
@@ -66,6 +69,7 @@ class IndexController extends Controller
         }
         
         $this->visit($user);
+        $this->totalVisit();
         
         $risk = $this->get('risk_calculator');
         $risk->setAge($user->getDateOfBirth());
@@ -98,7 +102,7 @@ class IndexController extends Controller
         return [
             'user' => $user->getVisits(),
             'unique' => 10,
-            'total' => 20
+            'total' => $this->getTotalVisit()
         ];
     }
 
@@ -108,6 +112,28 @@ class IndexController extends Controller
         $user->visit();
         $em->persist($user);
         $em->flush();
+    }
+    
+    protected function totalVisit()
+    {
+        $total = $this->getDoctrine()
+            ->getRepository('CheeseMainBundle:TotalVisits')
+            ->findAll();
+        
+        $em = $this->getDoctrine()->getManager();
+        $total[0]->visit();
+        $em->persist($total[0]);
+        $em->flush();
+    }
+    
+    protected function getTotalVisit()
+    {
+        $total = $this->getDoctrine()
+            ->getRepository('CheeseMainBundle:TotalVisits')
+            ->findAll();
+        
+        $em = $this->getDoctrine()->getManager();
+        return $total[0]->getTotal();
     }
         
 }
