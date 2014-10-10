@@ -120,6 +120,10 @@ class IndexController extends Controller
             ->getRepository('CheeseMainBundle:TotalVisits')
             ->findAll();
         
+        if (empty($total)) {
+            $total = [new TotalVisits()];
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $total[0]->visit();
         $em->persist($total[0]);
@@ -131,6 +135,10 @@ class IndexController extends Controller
         $total = $this->getDoctrine()
             ->getRepository('CheeseMainBundle:TotalVisits')
             ->findAll();
+        
+        if (empty($total)) {
+            return 1;
+        }
         
         $em = $this->getDoctrine()->getManager();
         return $total[0]->getTotal();
